@@ -43,7 +43,7 @@ async function displayTasks() {
       .map(
         ({ _id, name, completed }) => `<li class="task" data-id="${_id}">
           <p class="${completed ? 'completed' : ''}">${name}</p>
-          <button>edit</button>
+          <a href="task.html?id=${_id}">edit</a>
           <button class="task-delete-btn">delete</button>
         </li>`,
       )
