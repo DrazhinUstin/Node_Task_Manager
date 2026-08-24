@@ -4,19 +4,20 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Task Manager</title>
-    <style>
-      .completed {
-        text-decoration: line-through;
-      }
-    </style>
+    <script src="https://kit.fontawesome.com/88b18bb1d4.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <main>
+    <main class="container">
+      <h1 class="text-center">Task Manager</h1>
       <form class="task-form">
-        <input type="text" />
-        <button>add task</button>
+        <div>
+          <label for="name">Name</label>
+          <input type="text" id="name" />
+        </div>
+        <button class="btn"><i class="fa-solid fa-plus"></i>Add task</button>
       </form>
-      <div class="task-form-alert"></div>
+      <div class="task-form-error"></div>
       <ul class="task-list"></ul>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/axios@1.19.0/dist/axios.min.js"></script>

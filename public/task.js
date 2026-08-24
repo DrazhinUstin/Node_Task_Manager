@@ -4,11 +4,11 @@ const taskFormDOM = document.querySelector('.task-form');
 const taskFormInput = taskFormDOM.querySelector('input[type="text"]');
 const taskFormCheckbox = taskFormDOM.querySelector('input[type="checkbox"]');
 const taskFormButton = taskFormDOM.querySelector('button');
-const taskFormAlert = taskFormDOM.nextElementSibling;
+const taskFormError = taskFormDOM.nextElementSibling;
 
 taskFormDOM.addEventListener('submit', async (e) => {
   e.preventDefault();
-  taskFormAlert.textContent = '';
+  taskFormError.textContent = '';
   taskFormButton.disabled = true;
   try {
     await axios.patch(`/api/v1/tasks/${taskId}`, {
@@ -18,7 +18,7 @@ taskFormDOM.addEventListener('submit', async (e) => {
     window.location.href = 'index.html';
   } catch (error) {
     console.error(error);
-    taskFormAlert.textContent = `Failed to edit a task. The error message is: ${error.response.data.message}`;
+    taskFormError.textContent = `Failed to edit a task. The error message is: ${error.response.data.message}`;
   }
   taskFormButton.disabled = false;
 });
@@ -33,6 +33,6 @@ async function displayTask() {
     taskFormCheckbox.checked = completed;
   } catch (error) {
     console.error(error);
-    taskFormAlert.textContent = `Failed to load task. The error message is: ${error.response.data.message}`;
+    taskFormError.textContent = `Failed to load task. The error message is: ${error.response.data.message}`;
   }
 }

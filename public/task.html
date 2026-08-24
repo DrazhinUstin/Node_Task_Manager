@@ -4,18 +4,26 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Task</title>
+    <script src="https://kit.fontawesome.com/88b18bb1d4.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <main>
-      <h1>Edit task</h1>
+    <main class="container">
+      <h1 class="text-center">Task editing</h1>
       <form class="task-form">
-        <input type="text" />
-        <input type="checkbox" />
-        <button>edit</button>
+        <div>
+          <label for="name">Name</label>
+          <input type="text" id="name" />
+        </div>
+        <div>
+          <label for="completed">Completed</label>
+          <input type="checkbox" id="completed" />
+        </div>
+        <button class="btn"><i class="fa-solid fa-pen-to-square"></i>Edit task</button>
       </form>
-      <div class="task-form-alert"></div>
-      <div>
-        <a href="index.html">Back to tasks</a>
+      <div class="task-form-error"></div>
+      <div class="text-center">
+        <a href="index.html" class="text-link">Back to tasks</a>
       </div>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/axios@1.19.0/dist/axios.min.js"></script>
