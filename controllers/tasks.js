@@ -3,7 +3,7 @@ const CustomError = require('../lib/custom-error');
 
 async function getAllTasks(req, res, next) {
   try {
-    const tasks = await Task.find({});
+    const tasks = await Task.find({}).sort('-createdAt');
     res.status(200).json({ success: true, data: tasks });
   } catch (error) {
     next(error);

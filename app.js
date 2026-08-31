@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const tasks = require('./routes/tasks');
 const mongoose = require('mongoose');
+const notFound = require('./middleware/not-found');
 const errorHandler = require('./middleware/error-handler');
 
 const app = express();
@@ -11,6 +12,8 @@ app.use(express.static('public'));
 app.use(express.json());
 
 app.use('/api/v1/tasks', tasks);
+
+app.use(notFound);
 
 app.use(errorHandler);
 
