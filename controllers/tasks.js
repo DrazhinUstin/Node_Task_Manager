@@ -1,4 +1,4 @@
-const { Task } = require('../lib/models');
+const { Task } = require('../models/task');
 const CustomError = require('../lib/custom-error');
 
 async function getAllTasks(req, res, next) {

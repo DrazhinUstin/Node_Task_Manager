@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
-const tasks = require('./routes/tasks');
+const authRouter = require('./routes/auth');
+const tasksRouter = require('./routes/tasks');
 const mongoose = require('mongoose');
 const notFound = require('./middleware/not-found');
 const errorHandler = require('./middleware/error-handler');
@@ -11,7 +12,9 @@ app.use(express.static('public'));
 
 app.use(express.json());
 
-app.use('/api/v1/tasks', tasks);
+app.use('/api/v1/auth', authRouter);
+
+app.use('/api/v1/tasks', tasksRouter);
 
 app.use(notFound);
 
