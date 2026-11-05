@@ -1,11 +1,37 @@
+const CustomError = require('../lib/custom-error');
+
 function errorHandler(err, req, res, next) {
   console.error(err);
 
-  const status = err.status || 500;
+  if (err instanceof CustomError) {
+    return res.status(err.status).json({ success: false, message: err.message });
+  }
 
-  const message = err.message || 'Internal Server Error';
+  if (err.name === 'CastError') {
+    return res
+      .status(400)
+      .json({ success: false, message: `Value ${err.value} cannot be cast to ${err.kind}` });
+  }
 
-  res.status(status).json({ success: false, message });
+  if (err.name === 'ValidationError') {
+    return res.status(400).json({
+      success: false,
+      message: Object.values(err.errors)
+        .map((error) => error.message)
+        .join(', '),
+    });
+  }
+
+  if (err.code === 11000) {
+    return res.status(400).json({
+      success: false,
+      message: Object.entries(err.keyValue)
+        .map(([key, val]) => `${key} ${val} is already taken`)
+        .join(', '),
+    });
+  }
+
+  res.status(500).json({ success: false, message: 'Internal server error' });
 }
 
 module.exports = errorHandler;

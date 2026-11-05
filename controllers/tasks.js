@@ -29,7 +29,7 @@ async function getTask(req, res, next) {
 async function createTask(req, res, next) {
   try {
     const createdTask = await Task.create({ ...req.body, author: req.user.id });
-    res.status(200).json({ success: true, data: createdTask });
+    res.status(201).json({ success: true, data: createdTask });
   } catch (error) {
     next(error);
   }
