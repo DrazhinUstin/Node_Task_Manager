@@ -1,6 +1,4 @@
 const { User } = require('../models/user');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
 const CustomError = require('../lib/custom-error');
 
 async function register(req, res, next) {
@@ -29,7 +27,7 @@ async function login(req, res, next) {
       throw new CustomError('Invalid credentials!', 400);
     }
 
-    const match = await bcrypt.compare(password, user.password);
+    const match = await user.comparePassword(password);
 
     if (!match) {
       throw new CustomError('Invalid credentials!', 400);

@@ -28,6 +28,11 @@ userSchema.method('signJWT', function () {
   });
 });
 
+userSchema.method('comparePassword', async function (password) {
+  const match = await bcrypt.compare(password, this.password);
+  return match;
+});
+
 const User = mongoose.model('User', userSchema);
 
 module.exports = { userSchema, User };

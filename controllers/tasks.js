@@ -3,7 +3,7 @@ const CustomError = require('../lib/custom-error');
 
 async function getAllTasks(req, res, next) {
   try {
-    const tasks = await Task.find({}).sort('-createdAt');
+    const tasks = await Task.find({ author: req.user.id }).sort('-createdAt');
     res.status(200).json({ success: true, data: tasks });
   } catch (error) {
     next(error);
@@ -14,7 +14,7 @@ async function getTask(req, res, next) {
   try {
     const { taskId } = req.params;
 
-    const task = await Task.findById(taskId);
+    const task = await Task.findOne({ _id: taskId, author: req.user.id });
 
     if (!task) {
       throw new CustomError('Task Not Found!', 404);
@@ -28,7 +28,7 @@ async function getTask(req, res, next) {
 
 async function createTask(req, res, next) {
   try {
-    const createdTask = await Task.create(req.body);
+    const createdTask = await Task.create({ ...req.body, author: req.user.id });
     res.status(200).json({ success: true, data: createdTask });
   } catch (error) {
     next(error);
@@ -39,7 +39,7 @@ async function editTask(req, res, next) {
   try {
     const { taskId } = req.params;
 
-    const editedTask = await Task.findByIdAndUpdate(taskId, req.body, {
+    const editedTask = await Task.findOneAndUpdate({ _id: taskId, author: req.user.id }, req.body, {
       returnDocument: 'after',
       runValidators: true,
     });
@@ -58,7 +58,7 @@ async function deleteTask(req, res, next) {
   try {
     const { taskId } = req.params;
 
-    const deletedTask = await Task.findByIdAndDelete(taskId);
+    const deletedTask = await Task.findOneAndDelete({ _id: taskId, author: req.user.id });
 
     if (!deletedTask) {
       throw new CustomError('Task Not Found!', 404);
