@@ -1,3 +1,9 @@
+const token = localStorage.getItem('token');
+
+if (!token) {
+  window.location.replace('login.html');
+}
+
 const tasksDOM = document.querySelector('.task-list');
 const taskForm = document.querySelector('.task-form');
 const taskFormInput = taskForm.querySelector('input');
@@ -9,7 +15,11 @@ taskForm.addEventListener('submit', async (e) => {
   taskFormError.textContent = '';
   taskFormButton.disabled = true;
   try {
-    await axios.post('/api/v1/tasks', { name: taskFormInput.value });
+    await axios.post(
+      '/api/v1/tasks',
+      { name: taskFormInput.value },
+      { headers: { Authorization: `Bearer ${token}` } },
+    );
     taskFormInput.value = '';
     displayTasks();
   } catch (error) {
@@ -25,7 +35,9 @@ tasksDOM.addEventListener('click', async (e) => {
   target.disabled = true;
   const taskId = target.parentElement.dataset.id;
   try {
-    await axios.delete(`/api/v1/tasks/${taskId}`);
+    await axios.delete(`/api/v1/tasks/${taskId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     displayTasks();
   } catch (error) {
     console.error(error);
@@ -38,7 +50,9 @@ displayTasks();
 async function displayTasks() {
   tasksDOM.innerHTML = '<span class="spinner"></span>';
   try {
-    const response = await axios.get('/api/v1/tasks');
+    const response = await axios.get('/api/v1/tasks', {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     tasksDOM.innerHTML = response.data.data
       .map(
         ({ _id, name, completed }) => `<li class="task" data-id="${_id}">

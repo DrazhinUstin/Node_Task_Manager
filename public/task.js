@@ -1,3 +1,9 @@
+const token = localStorage.getItem('token');
+
+if (!token) {
+  window.location.replace('login.html');
+}
+
 const searchParams = new URLSearchParams(window.location.search);
 const taskId = searchParams.get('id');
 const taskFormDOM = document.querySelector('.task-form');
@@ -11,10 +17,14 @@ taskFormDOM.addEventListener('submit', async (e) => {
   taskFormError.textContent = '';
   taskFormButton.disabled = true;
   try {
-    await axios.patch(`/api/v1/tasks/${taskId}`, {
-      name: taskFormInput.value,
-      completed: taskFormCheckbox.checked,
-    });
+    await axios.patch(
+      `/api/v1/tasks/${taskId}`,
+      {
+        name: taskFormInput.value,
+        completed: taskFormCheckbox.checked,
+      },
+      { headers: { Authorization: `Bearer ${token}` } },
+    );
     window.location.href = 'index.html';
   } catch (error) {
     console.error(error);
@@ -27,7 +37,9 @@ displayTask();
 
 async function displayTask() {
   try {
-    const response = await axios.get(`/api/v1/tasks/${taskId}`);
+    const response = await axios.get(`/api/v1/tasks/${taskId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     const { name, completed } = response.data.data;
     taskFormInput.value = name;
     taskFormCheckbox.checked = completed;

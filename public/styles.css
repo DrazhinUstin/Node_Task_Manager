@@ -172,6 +172,7 @@ button {
   }
 }
 
+.form,
 .task-form {
   display: flex;
   flex-direction: column;
@@ -226,6 +227,7 @@ button {
   }
 }
 
+.form-error,
 .task-form-error {
   color: var(--color-destructive);
   text-align: center;
