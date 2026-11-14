@@ -1,3 +1,5 @@
+import api from './api.js';
+
 const token = localStorage.getItem('token');
 
 if (token) {
@@ -15,7 +17,7 @@ formDOM.addEventListener('submit', async (e) => {
   const formData = new FormData(e.currentTarget);
   const values = Object.fromEntries(formData.entries());
   try {
-    const { data } = await axios.post('/api/v1/auth/register', values);
+    const { data } = await api.post('/auth/register', values);
     localStorage.setItem('token', data.token);
     window.location.replace('index.html');
   } catch (error) {

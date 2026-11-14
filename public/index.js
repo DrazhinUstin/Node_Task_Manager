@@ -1,3 +1,5 @@
+import api from './api.js';
+
 const token = localStorage.getItem('token');
 
 if (!token) {
@@ -15,11 +17,7 @@ taskForm.addEventListener('submit', async (e) => {
   taskFormError.textContent = '';
   taskFormButton.disabled = true;
   try {
-    await axios.post(
-      '/api/v1/tasks',
-      { name: taskFormInput.value },
-      { headers: { Authorization: `Bearer ${token}` } },
-    );
+    await api.post('/tasks', { name: taskFormInput.value });
     taskFormInput.value = '';
     displayTasks();
   } catch (error) {
@@ -35,9 +33,7 @@ tasksDOM.addEventListener('click', async (e) => {
   target.disabled = true;
   const taskId = target.parentElement.dataset.id;
   try {
-    await axios.delete(`/api/v1/tasks/${taskId}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    await api.delete(`/tasks/${taskId}`);
     displayTasks();
   } catch (error) {
     console.error(error);
@@ -50,9 +46,7 @@ displayTasks();
 async function displayTasks() {
   tasksDOM.innerHTML = '<span class="spinner"></span>';
   try {
-    const response = await axios.get('/api/v1/tasks', {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const response = await api.get('/tasks');
     tasksDOM.innerHTML = response.data.data
       .map(
         ({ _id, name, completed }) => `<li class="task" data-id="${_id}">
